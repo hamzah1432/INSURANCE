@@ -1,22 +1,40 @@
-import { Box, Card, Drawer, Toolbar, Typography } from '@mui/material';
+import { Box, Card, Drawer, IconButton, Toolbar, Typography } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 
 import CardReminder from './CardReminder';
 
 const drawerWidth = 280;
-export default function RightBar() {
+
+interface RightBarProps {
+    anchor?: "right" | "left";
+    open?: boolean;
+    setOpen?: (open: boolean) => void;
+}
+
+export default function RightBar({ anchor = "right", open = false, setOpen }: RightBarProps) {
     return (
 
         <Drawer
             variant="permanent"
-            anchor="right"
+            anchor={anchor}
+            open={open}
             sx={{
                 width: drawerWidth,
                 flexShrink: 0,
                 zIndex: 0,
-                [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box',flexGrow:1 },
+                [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box', flexGrow: 1 },
             }}
         >
-            <Toolbar />
+            {
+                anchor == "left" ? 
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px' }}>
+                    <img width={142} src="/logo.png" alt="logo" />
+                    <IconButton onClick={() => setOpen && setOpen(false)}>
+                        <CloseIcon />
+                    </IconButton>
+                </Box> 
+                : <Toolbar />
+            }
             <Toolbar />
             <Box sx={{ overflow: 'auto', display: 'flex', flexDirection: 'column', gap: "20px" }}>
                 <Box sx={{ display: 'flex', flexDirection: 'column', padding: "16px 24px", gap: "8px", bgcolor: "#F5F5F5" }}>

@@ -1,9 +1,9 @@
-import { Box, Drawer, CssBaseline, Toolbar, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Paper, Card, CardContent, Avatar, colors, Typography, Alert, Button } from '@mui/material';
+import { Box, Drawer, Toolbar, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Paper, Card, CardContent, Avatar, colors, Typography, Alert, Button } from '@mui/material';
 import { Home, Settings, Apartment, Info } from '@mui/icons-material';
 import AddIcon from '@mui/icons-material/Add';
-import { Outlet, useNavigate } from 'react-router-dom';
-import Header from './Header';
-import CardReminder from './CardReminder';
+import {  useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import FormStepper from './FormStepper';
 
 const drawerWidth = 280;
 
@@ -27,6 +27,16 @@ function DrawerItem({ text, icon, path }: { text: string; icon: React.ReactNode;
 }
 
 export default function Layout() {
+  const [showPopup, setShowPopup] = useState(false);
+
+  const handleButtonClick = () => {
+    setShowPopup(true);
+  };
+
+  const handleClosePopup = () => {
+    setShowPopup(false);
+  };
+
   return (
     <>
       <Drawer
@@ -44,11 +54,31 @@ export default function Layout() {
             {drawerItems.map((item) => (
               <DrawerItem key={item.text} text={item.text} icon={item.icon} path={item.path} />
             ))}
-            <Button variant="contained" startIcon={<AddIcon />} fullWidth>new insurance</Button>
+            <Button variant="contained" startIcon={<AddIcon />} fullWidth onClick={handleButtonClick}>
+              new insurance
+            </Button>
           </List>
         </Box>
       </Drawer>
+      {showPopup && (
+        <Box
+          sx={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            zIndex: 1300,
+          }}
+          onClick={handleClosePopup}
+        >
+          <FormStepper />
+        </Box>
+      )}
     </>
   );
 }
-//bgcolor:"#F5F5F5",height:"100%"
